@@ -22,22 +22,24 @@ public class PlayerMove : MonoBehaviour
 
         if(Input.GetButton("Horizontal"))
         {
-            if(Input.GetKey(KeyCode.LeftShift))
-            {
-                anim.SetInteger("state", 2);
-            }
-            else
-            {
-                anim.SetInteger("state", 1);
-            }
+            anim.SetInteger("state", 1);
         }
         else
         {
             anim.SetInteger("state", 0);
         }
-        if(Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            anim.SetInteger("state", 5);
+            anim.SetBool("isrun", true);
+        }
+        else
+        {
+            anim.SetBool("isrun", false);
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            anim.SetInteger("state", 3);
         }
     }
 
