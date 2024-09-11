@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -7,8 +8,10 @@ public class Playermovement : MonoBehaviour
 {
     [SerializeField]
     public float movePower = 1f;
-    //[SerializeField]
-    //public float jumpPower = 3f;
+    [SerializeField]
+    public float sprintProportion =2f;
+    [SerializeField]
+    public float jumpPower = 6f;
     private Rigidbody2D characterRigidbody;
 
 
@@ -22,32 +25,36 @@ public class Playermovement : MonoBehaviour
 
     private void Update()
     {
-        /*if (Input.GetKeyDown(KeyCode.Space))
-        {
-            isJumping = true;
-        }*/
-    }
-
-    private void FixedUpdate()
-    {
         float inspeed = Input.GetAxis("Horizontal");
 
-        if(Input.GetKeyDown(KeyCode.LeftShift)) // keycode ¼öÁ¤ÇØ¾ßµÊ
+        if(Input.GetKey(KeyCode.LeftShift))
         {
-            transform.position += new Vector3(4 * inspeed * movePower * Time.deltaTime, 0, 0);
+            transform.position += new Vector3(sprintProportion * inspeed * movePower * Time.deltaTime, 0, 0);
         }
         else
         {
             transform.position += new Vector3(inspeed * movePower * Time.deltaTime, 0, 0);
         }
 
-        characterRigidbody.velocity = Vector2.zero;
-
-        /*if (isJumping)
+        if (Input.GetButtonDown("Jump"))
         {
-            characterRigidbody.AddForce(new Vector2(0, jumpPower), ForceMode2D.Impulse);
+            if (!isJumping)
+            {
+                characterRigidbody.AddForce(Vector2.up * jumpPower * 10, ForceMode2D.Impulse);
+                isJumping = true;
+                Debug.Log("isjumping == true");
+            }
         }
 
-        isJumping = false;*/
+        //characterRigidbody.velocity = Vector2.zero;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.tag.Equals("Floor"))
+        {
+            isJumping = false;
+            Debug.Log("isjumping == false");
+        }
     }
 }
